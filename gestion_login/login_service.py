@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 import pybreaker
 import redis  # Cliente de Redis
 import bcrypt  # Para hashear las contraseñas
-from flask_cors import CORS  # Importar CORS desde flask_cors
+# from flask_cors import CORS  # Importar CORS desde flask_cors
 
 # Configuración de logging
 logging.basicConfig(level=logging.INFO)
@@ -18,7 +18,7 @@ redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_respo
 app = Flask(__name__)
 
 # Habilitar CORS
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+# CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Listener personalizado para el Circuit Breaker
 class LoginCircuitBreakerListener(pybreaker.CircuitBreakerListener):
