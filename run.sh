@@ -1,6 +1,7 @@
 #!/bin/bash
 kubectl apply -f redis_db/redis.yml
 kubectl apply -f user_postgres_db/postgres-deployment.yaml
+kubectl apply -f gestion_usuarios/gestion-usuarios-deployment.yml
 
 sleep 30
 
