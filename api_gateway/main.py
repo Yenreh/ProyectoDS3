@@ -161,6 +161,7 @@ def create_appointment():
         print(f"Error creating appointment: {e}")
         return jsonify({"error": "Error creating appointment"}), 500
 
+
 @app.route('/appointment/update', methods=['PUT'])
 def update_appointment():
     # Body = JSON
@@ -182,7 +183,6 @@ def update_appointment():
     except requests.exceptions.RequestException as e:
         print(f"Error updating appointment: {e}")
         return jsonify({"error": "Error updating appointment"}), 500
-
 
 
 @app.route('/appointment/delete', methods=['DELETE'])
