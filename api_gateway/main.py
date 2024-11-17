@@ -8,7 +8,9 @@ app = Flask(__name__)
 users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
 appointments_microservice_endpoint = 'http://localhost:8001/api/'
 
+
 # Endpoints for Users Microservice
+
 
 @app.route('/users', methods=['GET'])
 def get_users():
@@ -115,7 +117,9 @@ def delete_user(id):
         print(f"Error deleting user: {e}")
         return jsonify({"error": "Error deleting user"}), 500
 
+
 # Endpoints for Appointments Microservice
+
 
 @app.route('/transactions_appointments', methods=['GET'])
 def get_transactions_appointments():
@@ -129,9 +133,72 @@ def get_transactions_appointments():
         return jsonify({"error": "Error fetching transactions"}), 500
 
 
+@app.route('/appointments', methods=['GET'])
+def get_appointments():
+    # Body = None
+    try:
+        response = requests.get(f'{appointments_microservice_endpoint}appointments/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching appointments: {e}")
+        return jsonify({"error": "Error fetching appointments"}), 500
+
+
+@app.route('/appointment/create', methods=['POST'])
+def create_appointment():
+    # Body = JSON
+    # {
+    #     "patient_id": 1,
+    #     "doctor_id": 1,
+    #     "date_time": "2021-07-01T10:00:00"
+    # }
+    try:
+        appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
+        response = requests.post(f'{appointments_microservice_endpoint}appointments/', json=appointment_data)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating appointment: {e}")
+        return jsonify({"error": "Error creating appointment"}), 500
+
+@app.route('/appointment/update', methods=['PUT'])
+def update_appointment():
+    # Body = JSON
+    # {
+    #     "appointment_id": "a694e2f1-1731-4715-aac0-2d6e4fea49ec,
+    #     "patient_id": 1,
+    #     "doctor_id": 1,
+    #     "status": "CONFIRMED"
+    # }
+    try:
+        appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
+        data = {
+            "patient_id": appointment_data.get("patient_id"),
+            "doctor_id": appointment_data.get("doctor_id"),
+            "status": appointment_data.get("status")
+        }
+        response = requests.put(f'{appointments_microservice_endpoint}appointments/{appointment_data.get("appointment_id")}/update/', json=data)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error updating appointment: {e}")
+        return jsonify({"error": "Error updating appointment"}), 500
 
 
 
+@app.route('/appointment/delete', methods=['DELETE'])
+def delete_appointment():
+    # Body = JSON
+    # {
+    #     "appointment_id": "a694e2f1-1731-4715-aac0-2d6e4fea49ec
+    # }
+    try:
+        appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
+        response = requests.delete(f'{appointments_microservice_endpoint}appointments/{appointment_data.get("appointment_id")}/delete/')
+        print(response.json())
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error deleting appointment: {e}")
+        return jsonify({"error": "Error deleting appointment"}), 500
 # Endpoints for Auth Microservice
 # Define authentication and context handling
 # def verify_token(token):

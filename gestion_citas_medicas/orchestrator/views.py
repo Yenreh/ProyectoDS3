@@ -62,4 +62,4 @@ class AppointmentViewSet(viewsets.ModelViewSet):
             return Response({"error": "Cita no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
         appointment.delete()
-        return Response({"message": "Cita eliminada correctamente"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Cita eliminada correctamente"}, status=status.HTTP_200_OK)
