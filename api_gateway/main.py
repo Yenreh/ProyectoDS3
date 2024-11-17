@@ -6,7 +6,9 @@ app = Flask(__name__)
 # Define RESTful routes for fetching users, doctors, and patients
 
 users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
+appointments_microservice_endpoint = 'http://localhost:8001/api/'
 
+# Endpoints for Users Microservice
 
 @app.route('/users', methods=['GET'])
 def get_users():
@@ -17,7 +19,7 @@ def get_users():
         return jsonify(data)
     except requests.exceptions.RequestException as e:
         print(f"Error fetching users: {e}")
-        return jsonify({"error": "Error fetching users"}), 500
+        return jsonify({"": "Error fetchingerror users"}), 500
 
 
 @app.route('/user/<int:id>', methods=['GET'])
@@ -113,7 +115,24 @@ def delete_user(id):
         print(f"Error deleting user: {e}")
         return jsonify({"error": "Error deleting user"}), 500
 
+# Endpoints for Appointments Microservice
 
+@app.route('/transactions_appointments', methods=['GET'])
+def get_transactions_appointments():
+    # Body = None
+    try:
+        response = requests.get(f'{appointments_microservice_endpoint}transactions/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching transactions: {e}")
+        return jsonify({"error": "Error fetching transactions"}), 500
+
+
+
+
+
+# Endpoints for Auth Microservice
 # Define authentication and context handling
 # def verify_token(token):
 #     try:

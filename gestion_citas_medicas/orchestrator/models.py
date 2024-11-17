@@ -1,41 +1,12 @@
 from django.db import models
 import uuid
 
-class Transaction(models.Model):
-    transaction_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    status = models.CharField(
-        max_length=20,
-        choices=[
-            ('PENDING', 'Pendiente'),
-            ('SUCCESS', 'Éxito'),
-            ('FAILED', 'Fallido')
-        ]
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class Patient(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15, blank=True)
-    
-    def __str__(self):
-        return self.name
-
-class Doctor(models.Model):
-    name = models.CharField(max_length=100)
-    specialty = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15, blank=True)
-    
-    def __str__(self):
-        return self.name
 
 class Appointment(models.Model):
-    patient_id = models.IntegerField()
-    doctor_id = models.IntegerField()
-    date_time = models.DateTimeField()
+    appointment_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    patient_id = models.IntegerField(default=None, null=True, blank=True)
+    doctor_id = models.IntegerField(default=None, null=True, blank=True)
+    date_time = models.DateTimeField(default=None, null=True, blank=True)
     status = models.CharField(
         max_length=20,
         choices=[
@@ -46,14 +17,25 @@ class Appointment(models.Model):
         default='PENDING'
     )
 
-    def __str__(self):
-        return f"{self.patient.name} - {self.doctor.name} ({self.date_time})"
+
+class Transaction(models.Model):
+    transaction_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('PENDING', 'Pendiente'),
+            ('SUCCESS', 'Éxito'),
+            ('FAILED', 'Fallido')
+        ]
+    )
+    appointment_id = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class AppointmentHistory(models.Model):
-    patient = models.IntegerField()
-    appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE)
+    history_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    patient_id = models.IntegerField(default=None, null=True, blank=True)
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     action = models.CharField(max_length=50)  # Ej: Created, Updated, Cancelled
     date_time = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.patient.name} - {self.action} ({self.date_time})"
