@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
 appointments_microservice_endpoint = 'http://localhost:8001/api/'
+auth_microservice_endpoint = 'http://localhost:3000/'
 
 
 # Endpoints for Users Microservice
@@ -198,25 +199,29 @@ def delete_appointment():
     except requests.exceptions.RequestException as e:
         print(f"Error deleting appointment: {e}")
         return jsonify({"error": "Error deleting appointment"}), 500
-# Endpoints for Auth Microservice
-# Define authentication and context handling
-# def verify_token(token):
-#     try:
-#         response = requests.post('http://authservice-service/verify-token', json={'token': token})
-#         data = response.json()
-#         if data.get('isValid', False):
-#             return token
-#         else:
-#             raise Exception("Token is invalid")
-#     except Exception as e:
-#         raise Exception("Error validating token") from e
 
-# @app.before_request
-# def check_auth():
-#     auth_header = request.headers.get('Authorization', '')
-#     token = auth_header.split('Bearer ')[-1]
-#     if not token or not verify_token(token):
-#         return jsonify({"error": "Unauthorized"}), 401
+
+# Endpoints for Auth Microservice
+
+# Define authentication and context handling
+def verify_token(token):
+    try:
+        response = requests.post(f'{auth_microservice_endpoint}verify-token', json={'token': token})
+        data = response.json()
+        if data.get('isValid', False):
+            return token
+        else:
+            raise Exception("Token is invalid")
+    except Exception as e:
+        raise Exception("Error validating token") from e
+
+
+@app.before_request
+def check_auth():
+    auth_header = request.headers.get('Authorization', '')
+    token = auth_header.split('Bearer ')[-1]
+    if not token or not verify_token(token):
+        return jsonify({"error": "Unauthorized"}), 401
 
 
 if __name__ == '__main__':
