@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'user_crud_microservice.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'localhost',
+        'HOST': '192.168.1.135',
         'PORT': '5432',
-        'NAME': 'db_users',
+        'NAME': 'db_users_micro',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
     }
