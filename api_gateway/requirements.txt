@@ -2,3 +2,4 @@ Flask
 Flask-GraphQL
 graphene
 requests
+pybreaker
