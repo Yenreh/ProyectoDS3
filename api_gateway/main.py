@@ -7,7 +7,10 @@ app = Flask(__name__)
 
 # Microservice endpoints
 users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
-auth_microservice_endpoint = 'http://localhost:9002/login'  # The first app's login endpoint
+login_microservice_endpoint = 'http://localhost:9002/login'  # The first app's login endpoint
+appointments_microservice_endpoint = 'http://localhost:8001/api/'
+auth_microservice_endpoint = 'http://localhost:3000/'
+
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
@@ -17,6 +20,8 @@ LOGIN_FAILURE_THRESHOLD = 3
 LOGIN_RESET_TIMEOUT = 30  # Segundos para resetear el "Circuit Breaker"
 last_failure_time = 0
 
+
+# Endpoints for Login Microservice
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -32,7 +37,7 @@ def login():
 
     # Make a request to the login microservice
     try:
-        login_response = requests.post(auth_microservice_endpoint, json={'username': username, 'password': password})
+        login_response = requests.post(login_microservice_endpoint, json={'username': username, 'password': password})
         
         if login_response.status_code == 200:
             login_failures = 0  # Resetear el contador de fallos en caso de éxito
@@ -47,6 +52,7 @@ def login():
         return jsonify({"error": f"Error during login: {e}"}), 500
 
 
+# Endpoints for Users Microservice
 
 
 @app.route('/users', methods=['GET'])
@@ -124,6 +130,111 @@ def delete_user(id):
     except requests.exceptions.RequestException as e:
         print(f"Error deleting user: {e}")
         return jsonify({"error": "Error deleting user"}), 500
+
+
+# Endpoints for Appointments Microservice
+
+
+@app.route('/transactions_appointments', methods=['GET'])
+def get_transactions_appointments():
+    # Body = None
+    try:
+        response = requests.get(f'{appointments_microservice_endpoint}transactions/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching transactions: {e}")
+        return jsonify({"error": "Error fetching transactions"}), 500
+
+
+@app.route('/appointments', methods=['GET'])
+def get_appointments():
+    # Body = None
+    try:
+        response = requests.get(f'{appointments_microservice_endpoint}appointments/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching appointments: {e}")
+        return jsonify({"error": "Error fetching appointments"}), 500
+
+
+@app.route('/appointment/create', methods=['POST'])
+def create_appointment():
+    # Body = JSON
+    # {
+    #     "patient_id": 1,
+    #     "doctor_id": 1,
+    #     "date_time": "2021-07-01T10:00:00"
+    # }
+    try:
+        appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
+        response = requests.post(f'{appointments_microservice_endpoint}appointments/', json=appointment_data)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating appointment: {e}")
+        return jsonify({"error": "Error creating appointment"}), 500
+
+
+@app.route('/appointment/update', methods=['PUT'])
+def update_appointment():
+    # Body = JSON
+    # {
+    #     "appointment_id": "a694e2f1-1731-4715-aac0-2d6e4fea49ec,
+    #     "patient_id": 1,
+    #     "doctor_id": 1,
+    #     "status": "CONFIRMED"
+    # }
+    try:
+        appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
+        data = {
+            "patient_id": appointment_data.get("patient_id"),
+            "doctor_id": appointment_data.get("doctor_id"),
+            "status": appointment_data.get("status")
+        }
+        response = requests.put(f'{appointments_microservice_endpoint}appointments/{appointment_data.get("appointment_id")}/update/', json=data)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error updating appointment: {e}")
+        return jsonify({"error": "Error updating appointment"}), 500
+
+
+@app.route('/appointment/delete', methods=['DELETE'])
+def delete_appointment():
+    # Body = JSON
+    # {
+    #     "appointment_id": "a694e2f1-1731-4715-aac0-2d6e4fea49ec
+    # }
+    try:
+        appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
+        response = requests.delete(f'{appointments_microservice_endpoint}appointments/{appointment_data.get("appointment_id")}/delete/')
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error deleting appointment: {e}")
+        return jsonify({"error": "Error deleting appointment"}), 500
+
+
+# Endpoints for Auth Microservice
+
+# Define authentication and context handling
+def verify_token(token):
+    try:
+        response = requests.post(f'{auth_microservice_endpoint}verify-token', json={'token': token})
+        data = response.json()
+        if data.get('isValid', False):
+            return token
+        else:
+            raise Exception("Token is invalid")
+    except Exception as e:
+        raise Exception("Error validating token") from e
+
+
+@app.before_request
+def check_auth():
+    auth_header = request.headers.get('Authorization', '')
+    token = auth_header.split('Bearer ')[-1]
+    if not token or not verify_token(token):
+        return jsonify({"error": "Unauthorized"}), 401
 
 
 if __name__ == '__main__':
