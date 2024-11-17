@@ -5,11 +5,12 @@ import time
 
 app = Flask(__name__)
 
+
 # Microservice endpoints
-users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
+users_microservice_endpoint = 'http://gestion-usuarios-service:8000/app/api/v1/app/'
 login_microservice_endpoint = 'http://localhost:9002/login'  # The first app's login endpoint
-appointments_microservice_endpoint = 'http://localhost:8001/api/'
-auth_microservice_endpoint = 'http://localhost:3000/'
+appointments_microservice_endpoint = 'http://gestion-citas-medicas-service:8000/api/'
+auth_microservice_endpoint = 'http://auth-service:3000/'
 
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
