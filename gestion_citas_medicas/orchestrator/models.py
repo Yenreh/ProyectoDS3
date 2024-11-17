@@ -33,8 +33,8 @@ class Doctor(models.Model):
         return self.name
 
 class Appointment(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointments')
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
+    patient_id = models.IntegerField()
+    doctor_id = models.IntegerField()
     date_time = models.DateTimeField()
     status = models.CharField(
         max_length=20,
@@ -50,7 +50,7 @@ class Appointment(models.Model):
         return f"{self.patient.name} - {self.doctor.name} ({self.date_time})"
 
 class AppointmentHistory(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='history')
+    patient = models.IntegerField()
     appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE)
     action = models.CharField(max_length=50)  # Ej: Created, Updated, Cancelled
     date_time = models.DateTimeField(auto_now_add=True)
