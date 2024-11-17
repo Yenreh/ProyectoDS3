@@ -5,12 +5,13 @@ app = Flask(__name__)
 
 # Define RESTful routes for fetching users, doctors, and patients
 
+users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
 
 @app.route('/users', methods=['GET'])
 def get_users():
     # Body = None
     try:
-        response = requests.get('http://localhost:8000/app/api/v1/app/')
+        response = requests.get(f'{users_microservice_endpoint}')
         data = response.json()
         return jsonify(data)
     except requests.exceptions.RequestException as e:
@@ -22,7 +23,7 @@ def get_users():
 def get_user(id):
     # Body = None
     try:
-        response = requests.get(f'http://localhost:8000/app/api/v1/app/{id}/')
+        response = requests.get(f'{users_microservice_endpoint}{id}/')
         data = response.json()
         return jsonify(data)
     except requests.exceptions.RequestException as e:
@@ -34,7 +35,7 @@ def get_user(id):
 def get_doctors():
     # Body = None
     try:
-        response = requests.get('http://localhost:8000/app/api/v1/app/doctors/')
+        response = requests.get(f'{users_microservice_endpoint}doctors/')
         data = response.json()
         return jsonify(data)
     except requests.exceptions.RequestException as e:
@@ -46,7 +47,7 @@ def get_doctors():
 def get_patients():
     # Body = None
     try:
-        response = requests.get('http://localhost:8000/app/api/v1/app/pacientes/')
+        response = requests.get(f'{users_microservice_endpoint}pacientes/')
         data = response.json()
         return jsonify(data)
     except requests.exceptions.RequestException as e:
@@ -72,7 +73,7 @@ def create_user():
     # }
     try:
         user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
-        response = requests.post('http://localhost:8000/app/api/v1/app/', json=user_data)
+        response = requests.post(f'{users_microservice_endpoint}', json=user_data)
         return jsonify(response.json()), response.status_code
     except requests.exceptions.RequestException as e:
         print(f"Error creating user: {e}")
@@ -94,7 +95,7 @@ def update_user(id):
     # }
     try:
         user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
-        response = requests.put(f'http://localhost:8000/app/api/v1/app/{id}/', json=user_data)
+        response = requests.put(f'{users_microservice_endpoint}{id}/', json=user_data)
         return jsonify(response.json()), response.status_code
     except requests.exceptions.RequestException as e:
         print(f"Error updating user: {e}")
@@ -105,7 +106,7 @@ def update_user(id):
 def delete_user(id):
     # Body = None
     try:
-        response = requests.delete(f'http://localhost:8000/app/api/v1/app/{id}/')
+        response = requests.delete(f'{users_microservice_endpoint}{id}/')
         return jsonify(response.json()), response.status_code
     except requests.exceptions.RequestException as e:
         print(f"Error deleting user: {e}")
