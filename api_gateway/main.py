@@ -1,59 +1,108 @@
-from flask import Flask, request
-from flask_graphql import GraphQLView
+from flask import Flask, jsonify, request
 import requests
-import graphene
 
 app = Flask(__name__)
 
+# Define RESTful routes for fetching users, doctors, and patients
 
-# Define GraphQL query schema
-class Query(graphene.ObjectType):
-    users = graphene.List(graphene.String)
-    user = graphene.Field(graphene.String, id=graphene.Int())
-    doctors = graphene.List(graphene.String)
-    patients = graphene.List(graphene.String)
+@app.route('/users', methods=['GET'])
+def get_users():
+    # Body = None
+    try:
+        response = requests.get('http://localhost:8000/app/api/v1/app/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching users: {e}")
+        return jsonify({"error": "Error fetching users"}), 500
 
-    def resolve_users(self, info):
-        # Example of body { "query": "{ users }" }
-        try:
-            response = requests.get('http://localhost:8000/app/api/v1/app/')
-            data = response.json()
-            return data
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching users: {e}")
-            return ["Error fetching users"]
+@app.route('/user/<int:id>', methods=['GET'])
+def get_user(id):
+    # Body = None
+    try:
+        response = requests.get(f'http://localhost:8000/app/api/v1/app/{id}/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching user: {e}")
+        return jsonify({"error": "Error fetching user"}), 500
 
-    def resolve_user(self, info, id):
-        # Example of body { "query": "{ user(id: <id>) }" }
-        try:
-            response = requests.get(f'http://localhost:8000/app/api/v1/app/{id}/')
-            data = response.json()
-            return data
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching user: {e}")
-            return "Error fetching user"
+@app.route('/doctors', methods=['GET'])
+def get_doctors():
+    # Body = None
+    try:
+        response = requests.get('http://localhost:8000/app/api/v1/app/doctors/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching doctors: {e}")
+        return jsonify({"error": "Error fetching doctors"}), 500
 
-    def resolve_doctors(self, info):
-        # Example of body { "query": "{ doctors }" }
-        try:
-            response = requests.get('http://localhost:8000/app/api/v1/app/doctors/')
-            data = response.json()
-            return data
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching doctors: {e}")
-            return ["Error fetching doctors"]
+@app.route('/patients', methods=['GET'])
+def get_patients():
+    # Body = None
+    try:
+        response = requests.get('http://localhost:8000/app/api/v1/app/pacientes/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching patients: {e}")
+        return jsonify({"error": "Error fetching patients"}), 500
 
-    def resolve_patients(self, info):
-        # Example of body { "query": "{ patients }" }
-        try:
-            response = requests.get('http://localhost:8000/app/api/v1/app/pacientes/')
-            data = response.json()
-            return data
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching patients: {e}")
-            return ["Error fetching patients"]
+# Add POST, PUT, DELETE for user operations
 
+@app.route('/user', methods=['POST'])
+def create_user():
+    # Body = JSON
+    # {
+    #     "id": 1,
+    #     "cc_user": 123456789,
+    #     "user_type": "paciente",
+    #     "name": "John Doe",
+    #     "date_of_birth": "1990-01-01",
+    #     "professional_id": "PROF12345",
+    #     "password": "password123",
+    #     "email": "johndoe@example.com",
+    #     "phone": "123-456-7890"
+    # }
+    try:
+        user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
+        response = requests.post('http://localhost:8000/app/api/v1/app/', json=user_data)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating user: {e}")
+        return jsonify({"error": "Error creating user"}), 500
 
+@app.route('/user/<int:id>', methods=['PUT'])
+def update_user(id):
+    # Body = JSON
+    # {
+    #     "cc_user": 987654321,
+    #     "user_type": "doctor",
+    #     "name": "Dr. Jane Updated",
+    #     "date_of_birth": "1985-06-15",
+    #     "professional_id": "PROF67890",
+    #     "password": "newpassword123",
+    #     "email": "drjaneupdated@example.com",
+    #     "phone": "987-654-3210"
+    # }
+    try:
+        user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
+        response = requests.put(f'http://localhost:8000/app/api/v1/app/{id}/', json=user_data)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error updating user: {e}")
+        return jsonify({"error": "Error updating user"}), 500
+
+@app.route('/user/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    # Body = None
+    try:
+        response = requests.delete(f'http://localhost:8000/app/api/v1/app/{id}/')
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        print(f"Error deleting user: {e}")
+        return jsonify({"error": "Error deleting user"}), 500
 
 # Define authentication and context handling
 def verify_token(token):
@@ -72,14 +121,8 @@ def verify_token(token):
 #     auth_header = request.headers.get('Authorization', '')
 #     token = auth_header.split('Bearer ')[-1]
 #     if not token or not verify_token(token):
-#         return "Unauthorized", 401
+#         return jsonify({"error": "Unauthorized"}), 401
 
-# Setup GraphQL view
-schema = graphene.Schema(query=Query)
-
-app.add_url_rule(
-    '/', view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True)
-)
 
 if __name__ == '__main__':
     app.run(debug=True)
