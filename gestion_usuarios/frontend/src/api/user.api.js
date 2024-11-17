@@ -10,6 +10,10 @@ export const getAllUsers = () => userApi.get("/");
 
 export const getUser = (id) => userApi.get(`/${id}/`);
 
+export const getDoctors = () => userApi.get("/doctors/");
+
+export const getPacientes = () => userApi.get("/pacientes/");
+
 export const createUser = (user) => userApi.post("/", user);
 
 export const deleteUser = (id) => userApi.delete(`/${id}/`);
