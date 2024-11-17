@@ -3,15 +3,22 @@ from flask import Flask, request, jsonify
 import pybreaker
 import redis  # Cliente de Redis
 import bcrypt  # Para hashear las contraseñas
+from flask_cors import CORS  # Importar CORS desde flask_cors
 
 # Configuración de logging
 logging.basicConfig(level=logging.INFO)
 
 # Configuración del Circuit Breaker
-login_circuit = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=60)
+login_circuit = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=30)
 
 # Configuración de Redis
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
+
+# Crear la aplicación Flask
+app = Flask(__name__)
+
+# Habilitar CORS
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Listener personalizado para el Circuit Breaker
 class LoginCircuitBreakerListener(pybreaker.CircuitBreakerListener):
@@ -36,9 +43,6 @@ class LoginCircuitBreakerListener(pybreaker.CircuitBreakerListener):
 # Agregar el listener al Circuit Breaker
 login_circuit.add_listener(LoginCircuitBreakerListener())
 
-# Crear la aplicación Flask
-app = Flask(__name__)
-
 def hash_password(password):
     """Hashea la contraseña antes de guardarla."""
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -58,24 +62,20 @@ def is_valid_login(username, password):
 
 @app.route('/register', methods=['POST'])
 def register():
-    # Obtener los datos de la solicitud
     username = request.json.get('username')
     password = request.json.get('password')
 
     if not username or not password:
         return jsonify({"message": "Usuario y contraseña son obligatorios"}), 400
 
-    # Guardar las credenciales hasheadas en Redis
     save_credentials_to_redis(username, password)
     return jsonify({"message": "Usuario registrado correctamente"}), 201
 
 @app.route('/login', methods=['POST'])
 def login():
-    # Obtener los datos de la solicitud
     username = request.json.get('username')
     password = request.json.get('password')
 
-    # Verificar el estado del Circuit Breaker
     logging.info(f"Estado del Circuit Breaker antes de la llamada: {login_circuit.state}")
     
     if login_circuit.state == pybreaker.STATE_OPEN:
@@ -83,14 +83,13 @@ def login():
         return jsonify({"message": "Servicio temporalmente no disponible"}), 503
 
     try:
-        # Llamada al Circuit Breaker para hacer el login
         result = login_circuit.call(is_valid_login, username, password)
         
         if result:
             logging.info(f"Login exitoso para {username}")
             return jsonify({"message": "Login exitoso"}), 200
         else:
-            logging.warning(f"Login fallido para {username} con la contraseña {password}")
+            logging.warning(f"Login fallido para {username}")
             return jsonify({"message": "Credenciales incorrectas"}), 401
     
     except pybreaker.CircuitBreakerError:
@@ -101,5 +100,4 @@ def login():
         return jsonify({"message": "Credenciales incorrectas"}), 401
 
 if __name__ == '__main__':
-    # Ejecutar la aplicación Flask
     app.run(debug=True, host='0.0.0.0', port=9002)
