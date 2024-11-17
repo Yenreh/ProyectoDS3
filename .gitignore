@@ -28,3 +28,8 @@ gestion_usuarios\frontend\*.njsproj
 gestion_usuarios\frontend\*.sln
 gestion_usuarios\frontend\*.sw?
 
+#Gestion de citas medicas
+gestion_citas_medicas\__pycache__
+gestion_citas_medicas\orchestrator\__pycache__
+
+
