@@ -14,7 +14,11 @@ router.register(r'patients', PatientViewSet)
 router.register(r'doctors', DoctorViewSet)
 router.register(r'appointments', AppointmentViewSet)
 router.register(r'appointment-history', AppointmentHistoryViewSet)
+from .views import CreateAppointmentView, UpdateAppointmentView, DeleteAppointmentView
 
 urlpatterns = [
     path('', include(router.urls)),  
+    path('appointments/create/', CreateAppointmentView.as_view(), name='create_appointment'),
+    path('appointments/update/<int:pk>/', UpdateAppointmentView.as_view(), name='update_appointment'),
+    path('appointments/delete/<int:pk>/', DeleteAppointmentView.as_view(), name='delete_appointment'),
 ]
