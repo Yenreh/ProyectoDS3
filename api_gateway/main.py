@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
 
+
 @app.route('/users', methods=['GET'])
 def get_users():
     # Body = None
