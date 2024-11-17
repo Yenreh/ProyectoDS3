@@ -1,13 +1,55 @@
 from flask import Flask, jsonify, request
 import requests
+from flask_cors import CORS  # Importar CORS desde flask_cors
+import time
 
 app = Flask(__name__)
 
-# Define RESTful routes for fetching users, doctors, and patients
-
+# Microservice endpoints
 users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
+login_microservice_endpoint = 'http://localhost:9002/login'  # The first app's login endpoint
 appointments_microservice_endpoint = 'http://localhost:8001/api/'
 auth_microservice_endpoint = 'http://localhost:3000/'
+
+
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+
+# Variables para simular el Circuit Breaker
+login_failures = 0
+LOGIN_FAILURE_THRESHOLD = 3
+LOGIN_RESET_TIMEOUT = 30  # Segundos para resetear el "Circuit Breaker"
+last_failure_time = 0
+
+
+# Endpoints for Login Microservice
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Obtaining login credentials from the request
+    username = request.json.get('username')
+    password = request.json.get('password')
+    
+    global login_failures, last_failure_time
+
+    # Verificar si el Circuit Breaker está abierto
+    if login_failures >= LOGIN_FAILURE_THRESHOLD and time.time() - last_failure_time < LOGIN_RESET_TIMEOUT:
+        return jsonify({"message": "Servicio temporalmente no disponible"}), 503
+
+    # Make a request to the login microservice
+    try:
+        login_response = requests.post(login_microservice_endpoint, json={'username': username, 'password': password})
+        
+        if login_response.status_code == 200:
+            login_failures = 0  # Resetear el contador de fallos en caso de éxito
+            return jsonify({"message": "Login successful", "data": login_response.json()}), 200
+        else:
+            login_failures += 1
+            last_failure_time = time.time()
+            return jsonify({"message": "Invalid credentials"}), 401
+    except requests.exceptions.RequestException as e:
+        login_failures += 1
+        last_failure_time = time.time()
+        return jsonify({"error": f"Error during login: {e}"}), 500
 
 
 # Endpoints for Users Microservice
@@ -15,19 +57,17 @@ auth_microservice_endpoint = 'http://localhost:3000/'
 
 @app.route('/users', methods=['GET'])
 def get_users():
-    # Body = None
     try:
         response = requests.get(f'{users_microservice_endpoint}')
         data = response.json()
         return jsonify(data)
     except requests.exceptions.RequestException as e:
         print(f"Error fetching users: {e}")
-        return jsonify({"": "Error fetchingerror users"}), 500
+        return jsonify({"error": "Error fetching users"}), 500
 
 
 @app.route('/user/<int:id>', methods=['GET'])
 def get_user(id):
-    # Body = None
     try:
         response = requests.get(f'{users_microservice_endpoint}{id}/')
         data = response.json()
@@ -39,7 +79,6 @@ def get_user(id):
 
 @app.route('/doctors', methods=['GET'])
 def get_doctors():
-    # Body = None
     try:
         response = requests.get(f'{users_microservice_endpoint}doctors/')
         data = response.json()
@@ -51,7 +90,6 @@ def get_doctors():
 
 @app.route('/patients', methods=['GET'])
 def get_patients():
-    # Body = None
     try:
         response = requests.get(f'{users_microservice_endpoint}pacientes/')
         data = response.json()
@@ -60,23 +98,10 @@ def get_patients():
         print(f"Error fetching patients: {e}")
         return jsonify({"error": "Error fetching patients"}), 500
 
+
 # Add POST, PUT, DELETE for user operations
-
-
 @app.route('/user', methods=['POST'])
 def create_user():
-    # Body = JSON
-    # {
-    #     "id": 1,
-    #     "cc_user": 123456789,
-    #     "user_type": "paciente",
-    #     "name": "John Doe",
-    #     "date_of_birth": "1990-01-01",
-    #     "professional_id": "PROF12345",
-    #     "password": "password123",
-    #     "email": "johndoe@example.com",
-    #     "phone": "123-456-7890"
-    # }
     try:
         user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
         response = requests.post(f'{users_microservice_endpoint}', json=user_data)
@@ -88,17 +113,6 @@ def create_user():
 
 @app.route('/user/<int:id>', methods=['PUT'])
 def update_user(id):
-    # Body = JSON
-    # {
-    #     "cc_user": 987654321,
-    #     "user_type": "doctor",
-    #     "name": "Dr. Jane Updated",
-    #     "date_of_birth": "1985-06-15",
-    #     "professional_id": "PROF67890",
-    #     "password": "newpassword123",
-    #     "email": "drjaneupdated@example.com",
-    #     "phone": "987-654-3210"
-    # }
     try:
         user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
         response = requests.put(f'{users_microservice_endpoint}{id}/', json=user_data)
@@ -110,7 +124,6 @@ def update_user(id):
 
 @app.route('/user/<int:id>', methods=['DELETE'])
 def delete_user(id):
-    # Body = None
     try:
         response = requests.delete(f'{users_microservice_endpoint}{id}/')
         return jsonify(response.json()), response.status_code
@@ -225,4 +238,4 @@ def check_auth():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
