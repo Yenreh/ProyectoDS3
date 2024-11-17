@@ -194,7 +194,6 @@ def delete_appointment():
     try:
         appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
         response = requests.delete(f'{appointments_microservice_endpoint}appointments/{appointment_data.get("appointment_id")}/delete/')
-        print(response.json())
         return jsonify(response.json()), response.status_code
     except requests.exceptions.RequestException as e:
         print(f"Error deleting appointment: {e}")
