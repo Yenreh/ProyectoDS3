@@ -170,7 +170,7 @@ def create_appointment():
     # }
     try:
         appointment_data = request.get_json()  # Assuming the appointment data is sent in the body as JSON
-        response = requests.post(f'{appointments_microservice_endpoint}appointments/', json=appointment_data)
+        response = requests.post(f'{appointments_microservice_endpoint}appointments/create/', json=appointment_data)
         return jsonify(response.json()), response.status_code
     except requests.exceptions.RequestException as e:
         print(f"Error creating appointment: {e}")
