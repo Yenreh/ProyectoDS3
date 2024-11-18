@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 login_circuit = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=30)
 
 # Configuración de Redis
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
+redis_client = redis.StrictRedis(host='redis-service-2', port=6379, db=0, decode_responses=True)
 
 # Crear la aplicación Flask
 app = Flask(__name__)

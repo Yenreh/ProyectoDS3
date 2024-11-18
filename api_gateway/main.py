@@ -4,16 +4,14 @@ from flask_cors import CORS  # Importar CORS desde flask_cors
 import time
 
 app = Flask(__name__)
-
+CORS(app)
 
 # Microservice endpoints
 users_microservice_endpoint = 'http://gestion-usuarios-service:8000/app/api/v1/app/'
-login_microservice_endpoint = 'http://localhost:9002/login'  # The first app's login endpoint
+login_microservice_endpoint = 'http://gestion-login-service:9002/login'  # The first app's login endpoint
 appointments_microservice_endpoint = 'http://gestion-citas-medicas-service:8000/api/'
 auth_microservice_endpoint = 'http://auth-service:3000/'
 
-
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 # Variables para simular el Circuit Breaker
 login_failures = 0
@@ -24,8 +22,10 @@ last_failure_time = 0
 
 # Endpoints for Login Microservice
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['OPTIONS', 'POST'])
 def login():
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'OK'}), 200
     # Obtaining login credentials from the request
     username = request.json.get('username')
     password = request.json.get('password')

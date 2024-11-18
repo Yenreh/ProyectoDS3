@@ -24,7 +24,16 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/login', credentials);
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTEiLCJuYW1lIjoiQWxpY2UiLCJpYXQiOjE2MDIwMDAwMDB9.HaMtsRnsp4VvstGhJKymF_PnU1OUKkQBjYV6NajouIM';
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      };
+      console.log('Axios Config:', config);
+
+      const response = await axios.post('http://localhost:5000/login', credentials, config);
       toast.success('¡Inicio de sesión exitoso!');
       console.log('Login exitoso:', response.data);
     } catch (error) {
