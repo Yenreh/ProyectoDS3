@@ -33,3 +33,43 @@ gestion_citas_medicas\__pycache__
 gestion_citas_medicas\orchestrator\__pycache__
 
 
+
+#Linux
+
+#Gestion de usuarios
+gestion_usuarios/app/__pycache__
+gestion_usuarios/frontend/node_modules
+gestion_usuarios/user_crud_microservice/__pycache__
+# Logs
+gestion_usuarios/frontend/logs
+gestion_usuarios/frontend/*.log
+gestion_usuarios/frontend/npm-debug.log*
+gestion_usuarios/frontend/yarn-debug.log*
+gestion_usuarios/frontend/yarn-error.log*
+gestion_usuarios/frontend/pnpm-debug.log*
+gestion_usuarios/frontend/lerna-debug.log*
+
+gestion_usuarios/frontend/node_modules
+gestion_usuarios/frontend/dist
+gestion_usuarios/frontend/dist-ssr
+gestion_usuarios/frontend/*.local
+
+# Editor directories and files
+gestion_usuarios/frontend/.vscode/*
+!.vscode/extensions.json
+gestion_usuarios/frontend/.DS_Store
+gestion_usuarios/frontend/*.suo
+gestion_usuarios/frontend/*.ntvs*
+gestion_usuarios/frontend/*.njsproj
+gestion_usuarios/frontend/*.sln
+gestion_usuarios/frontend/*.sw?
+
+#Gestion de citas medicas
+gestion_citas_medicas/__pycache__
+gestion_citas_medicas/orchestrator/__pycache__
+
+
+
+
+
+/gestion_citas_medicas/orchestrator/migrations/

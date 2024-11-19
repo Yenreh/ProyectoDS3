@@ -1,0 +1,6 @@
+Flask
+requests
+pybreaker
+redis
+bcrypt
+flask-cors

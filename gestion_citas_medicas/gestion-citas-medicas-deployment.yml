@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gestion-citas-medicas-pod
+  labels:
+    app: gestion-citas-medicas
+spec:
+  containers:
+    - name: gestion-citas-medicas-container
+      image: yenreh/gestion_citas_medicas
+      ports:
+        - containerPort: 8000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gestion-citas-medicas-service
+spec:
+  selector:
+    app: gestion-citas-medicas
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: LoadBalancer
+
