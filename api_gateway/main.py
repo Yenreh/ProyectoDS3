@@ -242,7 +242,7 @@ def delete_appointment():
         return jsonify({"error": "Error deleting appointment"}), 500
 
 
-@app.route('/appointment-history', methods=['GET'])
+@app.route('/appointments_history', methods=['GET'])
 def get_appointment_history():
     # Body = None
     try:
