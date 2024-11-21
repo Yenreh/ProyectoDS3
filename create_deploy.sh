@@ -14,4 +14,4 @@ sleep 10
 #kubectl apply -f microfrontend/microfrontend-deployment.yml
 sleep 5
 kubectl port-forward svc/api-gateway-service 5000:5000 &
-kubectl port-forward svc/microfrontend-service 5173:5173 &
+#kubectl port-forward svc/microfrontend-service 5173:5173 &
