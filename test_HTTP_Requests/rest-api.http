@@ -43,7 +43,7 @@ Accept: */*
 Authorization: {{token}}
 
 ### Test API GET Patients
-GET {{base_url}}/doctors
+GET {{base_url}}/patients
 Accept: */*
 Authorization: {{token}}
 
