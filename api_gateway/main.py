@@ -155,7 +155,7 @@ def delete_user(id):
     try:
         response = requests.delete(f'{users_microservice_endpoint}{id}/')
         if response.status_code == 204:
-            return jsonify({"message": "User deleted successfully"}), 204
+            return jsonify({"message": "User deleted successfully"}), 200
     except requests.exceptions.RequestException as e:
         print(f"Error deleting user: {e}")
         return jsonify({"error": "Error deleting user"}), 500
