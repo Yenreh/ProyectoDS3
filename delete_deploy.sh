@@ -1,21 +1,11 @@
 #!/bin/bash
 
-kubectl delete pod redis-pod
-kubectl delete pod redis-pod-2
-kubectl delete pod postgres-pod
-kubectl delete pod auth-pod
-kubectl delete pod gestion-usuarios-pod
-kubectl delete pod gestion-citas-medicas-pod
-kubectl delete pod gestion-login-pod
-kubectl delete pod api-gateway-pod
-#kubectl delete pod microfrontend-pod
-
-kubectl delete service redis-service
-kubectl delete service redis-service-2
-kubectl delete service postgres-service
-kubectl delete service auth-service
-kubectl delete service gestion-usuarios-service
-kubectl delete service gestion-citas-medicas-service
-kubectl delete service gestion-login-service
-kubectl delete service api-gateway-service
-#kubectl delete service microfrontend-service
+kubectl delete -f user_postgres_db/postgres-deployment.yaml
+kubectl delete -f redis_db/redis.yml
+kubectl delete -f redis_db/redis-2.yml
+kubectl delete -f gestion_login/gestion-login-deployment.yml
+kubectl delete -f gestion_citas_medicas/gestion-citas-medicas-deployment.yml
+kubectl delete -f gestion_usuarios/gestion-usuarios-deployment.yml
+kubectl delete -f auth/auth-deployment.yml
+kubectl delete -f api_gateway/api-gateway-deployment.yml
+#kubectl delete -f microfrontend/microfrontend-deployment.yml
