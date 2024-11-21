@@ -67,9 +67,6 @@ gestion_usuarios/frontend/*.sw?
 #Gestion de citas medicas
 gestion_citas_medicas/__pycache__
 gestion_citas_medicas/orchestrator/__pycache__
-
-
-
-
-
 /gestion_citas_medicas/orchestrator/migrations/
+/gestion_citas_medicas/db.sqlite3
+/gestion_usuarios/db.sqlite3
