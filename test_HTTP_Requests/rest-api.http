@@ -1,0 +1,120 @@
+### Test API GET Users
+POST {{base_url}}/login
+Content-Type: application/json
+Accept: */*
+Authorization: {{token}}
+
+{
+  "username": "test",
+  "password": "test"
+}
+
+### Teest API POST User
+POST {{base_url}}/user
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "cc_user": 123456789,
+  "date_of_birth": "1985-05-15",
+  "email": "juan.perez@doctors.com",
+  "id": 1,
+  "name": "Juan Pérez",
+  "password": "securepassword",
+  "phone": "3001234567",
+  "professional_id": "prof-9876",
+  "user_type": "doctor",
+  "user_uuid": "7e7d7911-c47f-4e56-97cf-da059ec2feb0"
+}
+
+### Test API GET Users
+GET {{base_url}}/users
+Accept: */*
+Authorization: {{token}}
+
+### Test API GET User
+GET {{base_url}}/user/1
+Accept: */*
+Authorization: {{token}}
+
+### Test API GET Doctors
+GET {{base_url}}/doctors
+Accept: */*
+Authorization: {{token}}
+
+### Test API GET Patients
+GET {{base_url}}/patients
+Accept: */*
+Authorization: {{token}}
+
+### Test API Update User
+PUT {{base_url}}/user/1
+Content-Type: application/json
+Accept: */
+Authorization: {{token}}
+
+{
+  "user_type": "doctor",
+  "name": "Dr. Jane Updated",
+  "date_of_birth": "1985-06-15",
+  "password": "newpassword123"
+}
+
+### Test API DELETE User
+DELETE {{base_url}}/user/1
+Accept: */*
+Authorization: {{token}}
+
+
+### Test API POST Appointment
+POST {{base_url}}/appointment/create
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "date_time": "2021-07-01T10:00:00",
+  "doctor_id": 3,
+  "patient_id": 4
+}
+
+
+### Test API GET Appointments
+GET {{base_url}}/appointments
+Accept: */*
+Authorization: {{token}}
+
+### Test API UPDATE Appointment
+PUT {{base_url}}/appointment/update
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "appointment_id": "47425279-d7a6-4e1f-b091-c7ce569993ba",
+  "date_time": "2021-07-01T11:00:00",
+  "doctor_id": 2,
+  "patient_id": 1,
+  "status": "CONFIRMED"
+}
+
+### Test API DELETE Appointment
+DELETE {{base_url}}/appointment/delete
+Content-Type: application/json
+Accept: application/json
+Authorization: {{token}}
+
+{
+  "appointment_id": "47425279-d7a6-4e1f-b091-c7ce569993ba"
+}
+
+### Test API GET Appointments Transactions
+GET {{base_url}}/transactions_appointments
+Accept: */*
+Authorization: {{token}}
+
+### Test API GET Appointments History
+GET {{base_url}}/appointments_history
+Accept: */*
+Authorization: {{token}}
+

@@ -58,17 +58,19 @@ def login():
 
 @app.route('/users', methods=['GET'])
 def get_users():
+    # Body = None
     try:
         response = requests.get(f'{users_microservice_endpoint}')
         data = response.json()
         return jsonify(data)
     except requests.exceptions.RequestException as e:
         print(f"Error fetching users: {e}")
-        return jsonify({"error": "Error fetching users"}), 500
+        return jsonify({"": "Error fetchingerror users"}), 500
 
 
 @app.route('/user/<int:id>', methods=['GET'])
 def get_user(id):
+    # Body = None
     try:
         response = requests.get(f'{users_microservice_endpoint}{id}/')
         data = response.json()
@@ -80,6 +82,7 @@ def get_user(id):
 
 @app.route('/doctors', methods=['GET'])
 def get_doctors():
+    # Body = None
     try:
         response = requests.get(f'{users_microservice_endpoint}doctors/')
         data = response.json()
@@ -103,6 +106,18 @@ def get_patients():
 # Add POST, PUT, DELETE for user operations
 @app.route('/user', methods=['POST'])
 def create_user():
+    # Body = JSON
+    # {
+    #     "id": 1,
+    #     "cc_user": 123456789,
+    #     "user_type": "paciente",
+    #     "name": "John Doe",
+    #     "date_of_birth": "1990-01-01",
+    #     "professional_id": "PROF12345",
+    #     "password": "password123",
+    #     "email": "johndoe@example.com",
+    #     "phone": "123-456-7890"
+    # }
     try:
         user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
         response = requests.post(f'{users_microservice_endpoint}', json=user_data)
@@ -114,6 +129,17 @@ def create_user():
 
 @app.route('/user/<int:id>', methods=['PUT'])
 def update_user(id):
+    # Body = JSON
+    # {
+    #     "cc_user": 987654321,
+    #     "user_type": "doctor",
+    #     "name": "Dr. Jane Updated",
+    #     "date_of_birth": "1985-06-15",
+    #     "professional_id": "PROF67890",
+    #     "password": "newpassword123",
+    #     "email": "drjaneupdated@example.com",
+    #     "phone": "987-654-3210"
+    # }
     try:
         user_data = request.get_json()  # Assuming the user data is sent in the body as JSON
         response = requests.put(f'{users_microservice_endpoint}{id}/', json=user_data)
@@ -125,9 +151,11 @@ def update_user(id):
 
 @app.route('/user/<int:id>', methods=['DELETE'])
 def delete_user(id):
+    # Body = None
     try:
         response = requests.delete(f'{users_microservice_endpoint}{id}/')
-        return jsonify(response.json()), response.status_code
+        if response.status_code == 204:
+            return jsonify({"message": "User deleted successfully"}), 200
     except requests.exceptions.RequestException as e:
         print(f"Error deleting user: {e}")
         return jsonify({"error": "Error deleting user"}), 500
@@ -213,6 +241,18 @@ def delete_appointment():
     except requests.exceptions.RequestException as e:
         print(f"Error deleting appointment: {e}")
         return jsonify({"error": "Error deleting appointment"}), 500
+
+
+@app.route('/appointments_history', methods=['GET'])
+def get_appointment_history():
+    # Body = None
+    try:
+        response = requests.get(f'{appointments_microservice_endpoint}appointment-history/')
+        data = response.json()
+        return jsonify(data)
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching appointment history: {e}")
+        return jsonify({"error": "Error fetching appointment history"}), 500
 
 
 # Endpoints for Auth Microservice

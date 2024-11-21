@@ -17,7 +17,7 @@ def orchestrate_appointment(patient_id, doctor_id, date_time):
         Appointment.objects.create(
             appointment_id=appointment_id,
             patient_id=patient_id,
-            doctor_id=patient_id,
+            doctor_id=doctor_id,
             date_time=date_time,
             status='PENDING'
         )
@@ -71,13 +71,12 @@ def orchestrate_appointment(patient_id, doctor_id, date_time):
 def compensate_appointment(transaction_id):
     try:
         # 1 - Obtener la transacción
-        transaction = Transaction.objects.get(transaction_id=transaction_id)
+        transaction = Transaction.objects.filter(transaction_id=transaction_id).first()
         appointment_id = transaction.appointment_id.appointment_id
 
         # 2 - Se Cancela la cita
-        appointment = Appointment.objects.get(appointment_id=appointment_id)
-        appointment.status = 'CANCELLED'
-        appointment.save()
+        appointment = Appointment.objects.filter(appointment_id=appointment_id).first()
+        Appointment.objects.filter(appointment_id=appointment_id).update(status='CANCELLED')
 
         # 3 - Se guarda la acción en el historial
         AppointmentHistory.objects.create(
