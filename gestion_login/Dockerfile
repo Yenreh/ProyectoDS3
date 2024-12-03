@@ -1,20 +1,20 @@
-# Usa una imagen base oficial de Python
-FROM python:3.11-slim
+# Usar la imagen oficial de Node.js basada en Alpine
+FROM node:23-alpine
 
-# Establece el directorio de trabajo dentro del contenedor
+# Crear y establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copia el archivo de requisitos de la aplicación
-COPY requirements.txt /app/
+# Copiar el package.json y package-lock.json para instalar dependencias
+COPY Backend/package*.json ./
 
-# Instala las dependencias de la aplicación
-RUN pip install --no-cache-dir -r requirements.txt
+# Instalar dependencias
+RUN npm install
 
-# Copia el código de la aplicación Flask al contenedor
-COPY . /app/
+# Copiar el resto de los archivos del backend al contenedor
+COPY Backend/ .
 
-# Exponer el puerto que utilizará la aplicación
-EXPOSE 9002
+# Exponer el puerto en el que corre la API (3000)
+EXPOSE 3000
 
-# Comando para ejecutar la aplicación cuando el contenedor se inicie
-CMD ["python", "login_service.py"]
+
+CMD ["npm", "run","dev"]

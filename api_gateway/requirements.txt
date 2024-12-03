@@ -4,3 +4,4 @@ pybreaker
 redis
 bcrypt
 flask-cors
+python-dotenv

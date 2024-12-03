@@ -1,0 +1,29 @@
+{
+ "name": "landingpage_camaleon",
+ "version": "1.0.0",
+ "type": "module",
+ "main": "index.js",
+ "scripts": {
+  "dev": "nodemon src/index.js"
+ },
+ "keywords": [],
+ "author": "",
+ "license": "ISC",
+ "description": "",
+ "dependencies": {
+  "cors": "^2.8.5",
+  "dotenv": "^16.4.5",
+  "express": "^4.21.1",
+  "express-handlebars": "^8.0.1",
+  "express-session": "^1.17.3",
+  "firebase": "^10.14.1",
+  "firebase-admin": "^12.7.0",
+  "morgan": "^1.10.0",
+  "multer": "^1.4.5-lts.1",
+  "passport": "^0.7.0",
+  "passport-google-oauth20": "^2.0.0"
+ },
+ "devDependencies": {
+  "nodemon": "^3.1.7"
+ }
+}
