@@ -211,7 +211,7 @@ def delete_user(id):
         return jsonify({"error": "Error deleting user"}), 500
     
 
-# Endpoints for Appointments Microservice
+# Endpoints for Appointments Microservic
     
 @app.route('/transactions_appointments', methods=['GET'])
 @auth_required
