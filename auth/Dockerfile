@@ -10,6 +10,9 @@ WORKDIR /app
 COPY package.json . 
 COPY package-lock.json .
 
+# Instalar las dependencias
+RUN npm install
+
 # Copiar el resto de los archivos del backend al contenedor
 COPY . .
 

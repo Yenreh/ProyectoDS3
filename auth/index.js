@@ -1,7 +1,6 @@
 import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
-import cors from 'cors';
 import dotenv from 'dotenv';  // Importar dotenv
 
 import authRoutes from './routes/auth.js'; 
@@ -12,11 +11,6 @@ dotenv.config();
 
 const app = express();
 
-// Configurar CORS
-app.use(cors({
-    origin: ['http://localhost:5174'],  // Agregar el nuevo puerto
-    credentials: true
-}));
 
 // Configurar el body parser
 app.use(bodyParser.json());
