@@ -20,7 +20,7 @@ appointments_microservice_endpoint = 'http://gestion-citas-medicas-service:8000/
 auth_service_endpoint = 'http://auth-service:3000/auth/login'
 firebase_token_validation_endpoint = f"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={os.getenv('FIREBASE_API_KEY')}"
 logout_service_endpoint = 'http://auth-service:3000/auth/logout'  # El endpoint de logout
-
+register_service_endpoint = 'http://auth-service:3000/users/createUser'
 # Middleware de autenticación
 def auth_required(f):
     @wraps(f)
@@ -97,6 +97,35 @@ def logout():
     except Exception as e:
         print(f"Error al cerrar sesión: {e}")
         return jsonify({"message": "Error al cerrar sesión"}), 500
+
+@app.route('/users/createUser', methods=['POST'])
+def register_user():
+    try:
+        # Obtener los datos del usuario del cuerpo de la solicitud
+        user_data = request.get_json()
+        
+        # Validar que los campos requeridos estén presentes
+        required_fields = ['email', 'password', 'displayName']
+        for field in required_fields:
+            if field not in user_data:
+                return jsonify({"error": f"El campo {field} es obligatorio"}), 400
+
+        # Hacer una solicitud POST al microservicio de autenticación para crear el usuario
+        response = requests.post(register_service_endpoint, json=user_data)
+        
+        # Devolver la respuesta del microservicio
+        if response.status_code == 201:
+            return jsonify(response.json()), 201
+        else:
+            return jsonify({"error": "Error al crear el usuario", "details": response.json()}), response.status_code
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Error comunicándose con el servicio de autenticación: {e}")
+        return jsonify({"error": "Error al comunicarse con el servicio de autenticación"}), 500
+    except Exception as e:
+        print(f"Error al procesar la solicitud: {e}")
+        return jsonify({"error": "Error interno del servidor"}), 500
+
 
 # Endpoints para el Microservicio de Usuarios
 @app.route('/users', methods=['GET'])
