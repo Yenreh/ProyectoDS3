@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: api-gateway-container
-      image: yenreh/api_gateway:latest
+      image: ervincaravaliibarra/api_gateway:latest
       ports:
         - containerPort: 5000
 ---

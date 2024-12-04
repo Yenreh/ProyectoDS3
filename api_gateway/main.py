@@ -13,13 +13,13 @@ app.secret_key = 'mi_clave_secreta'  # Necesario para usar sesiones en Flask
 
 
 # Endpoints de los microservicios
-users_microservice_endpoint = 'http://localhost:8000/app/api/v1/app/'
-appointments_microservice_endpoint = 'http://localhost:8001/api/'
+users_microservice_endpoint = 'http://gestion-usuarios-service:8000/app/api/v1/app/'
+appointments_microservice_endpoint = 'http://gestion-citas-medicas-service:8000/api/'
 
 # Endpoint de autenticación
-auth_service_endpoint = 'http://localhost:3000/auth/login'
+auth_service_endpoint = 'http://auth-service:3000/auth/login'
 firebase_token_validation_endpoint = f"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={os.getenv('FIREBASE_API_KEY')}"
-logout_service_endpoint = 'http://localhost:3000/auth/logout'  # El endpoint de logout
+logout_service_endpoint = 'http://auth-service:3000/auth/logout'  # El endpoint de logout
 
 # Middleware de autenticación
 def auth_required(f):
@@ -230,9 +230,9 @@ def get_transactions_appointments():
 @app.route('/appointments', methods=['GET'])
 @auth_required
 def get_appointments():
+    # Body = None
     try:
-        # Solicitar datos de citas al microservicio
-        response = requests.get(f'{appointments_microservice_endpoint}')
+        response = requests.get(f'{appointments_microservice_endpoint}appointments/')
         data = response.json()
         return jsonify(data)
     except requests.exceptions.RequestException as e:

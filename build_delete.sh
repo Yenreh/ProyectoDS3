@@ -1,7 +1,6 @@
-docker rmi -f yenreh/gestion_usuarios
-docker rmi -f yenreh/auth
-docker rmi -f yenreh/gestion_citas_medicas
-docker rmi -f yenreh/api_gateway
-docker rmi -f yenreh/gestion_login
+docker rmi -f ervincaravaliibarra/gestion_usuarios
+docker rmi -f ervincaravaliibarra/auth
+docker rmi -f ervincaravaliibarra/gestion_citas_medicas
+docker rmi -f ervincaravaliibarra/api_gateway
 docker image prune -f
 

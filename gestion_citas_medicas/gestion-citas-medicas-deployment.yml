@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: gestion-citas-medicas-container
-      image: yenreh/gestion_citas_medicas
+      image: ervincaravaliibarra/gestion_citas_medicas
       ports:
         - containerPort: 8000
 

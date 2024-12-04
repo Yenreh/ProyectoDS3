@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9ru^adkom*bh3$n7se!xbpvjqo33ujqp$a)cxdhrk$7*ulchw1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'postgres-service', 'gestion-usuarios-service']
 
 
 # Application definition
@@ -79,11 +79,14 @@ WSGI_APPLICATION = 'user_crud_microservice.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'postgres-service',
+        'PORT': '5432',
+        'NAME': 'db_users',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
     }
 }
-
 
 
 # Password validation
@@ -122,15 +125,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# CORS settings (uncomment if needed)
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:5173',
-# ]
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]
