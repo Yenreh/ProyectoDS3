@@ -7,7 +7,7 @@ import os
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
+CORS(app,supports_credentials=True)
 app.secret_key = 'mi_clave_secreta'  # Necesario para usar sesiones en Flask
 
 
@@ -97,7 +97,6 @@ def logout():
     except Exception as e:
         print(f"Error al cerrar sesión: {e}")
         return jsonify({"message": "Error al cerrar sesión"}), 500
-
 @app.route('/users/createUser', methods=['POST'])
 def register_user():
     try:

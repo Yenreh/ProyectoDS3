@@ -7,7 +7,8 @@ import { FiEye, FiEyeOff, FiMail, FiLock } from 'react-icons/fi';
 import { toast } from 'react-hot-toast';
 import InputField from './InputField';
 import PasswordStrength from './PasswordStrength';
-import { login } from '../../api/apis';  // Import login function from apis.js
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
   email: yup
@@ -25,6 +26,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -38,6 +40,8 @@ const LoginForm = () => {
 
   const password = watch('password', '');
 
+  const { login } = useAuth();
+
   const handleResetPassword = async () => {
     const email = getValues('email');
     if (!email) {
@@ -46,7 +50,7 @@ const LoginForm = () => {
     }
 
     setIsResetting(true);
-    // Implement your resetPassword logic here if necessary
+    // Implementa aquí la lógica para restablecer la contraseña si es necesario
     setIsResetting(false);
     toast.success('Se ha enviado un email para restablecer tu contraseña');
   };
@@ -54,103 +58,105 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const { token } = await login(data.email, data.password);  // Call the login function from apis.js
+      await login(data.email, data.password);
       setIsLoading(false);
       toast.success('¡Bienvenido!');
-      // You can save the token in local storage or context, or redirect the user
+      navigate('/dashboard');
     } catch (error) {
       setIsLoading(false);
-      toast.error(error.message);  // Show error message if login fails
+      toast.error(error.message);
     }
   };
 
   return (
-    <motion.form
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">
-        Iniciar Sesión
-      </h2>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <motion.form
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-96"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">
+          Iniciar Sesión
+        </h2>
 
-      <div className="space-y-4">
-        <InputField
-          label="Email"
-          type="email"
-          icon={<FiMail />}
-          error={errors.email?.message}
-          {...register('email')}
-        />
-
-        <div className="relative">
+        <div className="space-y-4">
           <InputField
-            label="Contraseña"
-            type={showPassword ? 'text' : 'password'}
-            icon={<FiLock />}
-            error={errors.password?.message}
-            {...register('password')}
+            label="Email"
+            type="email"
+            icon={<FiMail />}
+            error={errors.email?.message}
+            {...register('email')}
           />
-          <button
-            type="button"
-            className="absolute right-3 top-9 text-gray-500"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FiEyeOff /> : <FiEye />}
-          </button>
-        </div>
 
-        <PasswordStrength password={password} />
-
-        <div className="flex items-center justify-between">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              {...register('rememberMe')}
-              className="form-checkbox"
+          <div className="relative">
+            <InputField
+              label="Contraseña"
+              type={showPassword ? 'text' : 'password'}
+              icon={<FiLock />}
+              error={errors.password?.message}
+              {...register('password')}
             />
-            <span className="text-sm text-gray-600 dark:text-gray-300">
-              Recordarme
-            </span>
-          </label>
-          <button
-            type="button"
-            onClick={handleResetPassword}
-            disabled={isResetting}
-            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400"
-          >
-            {isResetting ? 'Enviando...' : '¿Olvidaste tu contraseña?'}
-          </button>
-        </div>
+            <button
+              type="button"
+              className="absolute right-3 top-9 text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
+          </div>
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50"
-        >
-          {isLoading ? (
-            <span className="flex items-center justify-center">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+          <PasswordStrength password={password} />
+
+          <div className="flex items-center justify-between">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                {...register('rememberMe')}
+                className="form-checkbox"
               />
-            </span>
-          ) : (
-            'Iniciar Sesión'
-          )}
-        </button>
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                Recordarme
+              </span>
+            </label>
+            <button
+              type="button"
+              onClick={handleResetPassword}
+              disabled={isResetting}
+              className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400"
+            >
+              {isResetting ? 'Enviando...' : '¿Olvidaste tu contraseña?'}
+            </button>
+          </div>
 
-        <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
-          ¿No tienes una cuenta?{' '}
-          <a href="/register" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
-            Regístrate aquí
-          </a>
-        </p>
-      </div>
-    </motion.form>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200 disabled:opacity-50"
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                />
+              </span>
+            ) : (
+              'Iniciar Sesión'
+            )}
+          </button>
+
+          <p className="text-center text-sm text-gray-600 dark:text-gray-300 mt-4">
+            ¿No tienes una cuenta?{' '}
+            <a href="/register" className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+              Regístrate aquí
+            </a>
+          </p>
+        </div>
+      </motion.form>
+    </div>
   );
 };
 
