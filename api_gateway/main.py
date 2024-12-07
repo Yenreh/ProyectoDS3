@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session,redirect
 import requests
 from flask_cors import CORS
 from functools import wraps
@@ -15,7 +15,7 @@ app.secret_key = 'mi_clave_secreta'  # Necesario para usar sesiones en Flask
 # Endpoints de los microservicios
 users_microservice_endpoint = 'http://gestion-usuarios-service:8000/app/api/v1/app/'
 appointments_microservice_endpoint = 'http://gestion-citas-medicas-service:8000/api/'
-
+time_real_cominication_endpoint = 'http://localhost:8080/TimeComunication'
 # Endpoint de autenticación
 auth_service_endpoint = 'http://auth-service:3000/auth/login'
 firebase_token_validation_endpoint = f"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={os.getenv('FIREBASE_API_KEY')}"
@@ -124,6 +124,16 @@ def register_user():
     except Exception as e:
         print(f"Error al procesar la solicitud: {e}")
         return jsonify({"error": "Error interno del servidor"}), 500
+
+@app.route('/time_communication', methods=['GET'])
+def time_communication():
+    try:
+        # Redirige a la URL deseada
+        return redirect(time_real_cominication_endpoint, code=302)
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Error communicating with the real-time communication service"}), 500
 
 
 # Endpoints para el Microservicio de Usuarios

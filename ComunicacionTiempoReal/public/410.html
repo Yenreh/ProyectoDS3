@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>410 - Connection Lost</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #4a1d96 50%, #581c87 100%);
+            color: white;
+            padding: 1rem;
+        }
+
+        .container {
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .error-code {
+            font-size: 9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #e9d5ff;
+            margin-bottom: 1rem;
+            animation: slideUp 0.5s ease-out 0.2s both;
+        }
+
+        .message {
+            font-size: 1.25rem;
+            color: #f3e8ff;
+            margin-bottom: 0.5rem;
+            animation: fadeIn 0.5s ease-out 0.4s both;
+        }
+
+        .sub-message {
+            color: #e9d5ff;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-out 0.4s both;
+        }
+
+        .home-button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: #a855f7;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideUp 0.5s ease-out 0.6s both;
+            box-shadow: 0 4px 6px -1px rgba(168, 85, 247, 0.1);
+        }
+
+        .home-button:hover {
+            background-color: #9333ea;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px -1px rgba(168, 85, 247, 0.3);
+        }
+
+        .dots-container {
+            margin-top: 3rem;
+            animation: fadeIn 0.5s ease-out 0.8s both;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 0.75rem;
+            height: 0.75rem;
+            background-color: #c084fc;
+            border-radius: 50%;
+            margin: 0 0.25rem;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="error-code">410</h1>
+        <h2 class="title">Connection Lost</h2>
+        <p class="message">The real-time connection you're looking for is no longer available.</p>
+        <p class="sub-message">This resource has been permanently removed from our servers.</p>
+        <button class="home-button" onclick="window.location.replace('http://localhost:5173/dashboard')">Return Home</button>
+
+        <div class="dots-container">
+            <div class="dot" style="animation: pulse 1.5s infinite 0s"></div>
+            <div class="dot" style="animation: pulse 1.5s infinite 0.2s"></div>
+            <div class="dot" style="animation: pulse 1.5s infinite 0.4s"></div>
+            <div class="dot" style="animation: pulse 1.5s infinite 0.6s"></div>
+            <div class="dot" style="animation: pulse 1.5s infinite 0.8s"></div>
+        </div>
+    </div>
+    <script>
+        // Add dynamic dots to the title
+        let dots = '';
+        setInterval(() => {
+            dots = dots.length >= 3 ? '' : dots + '.';
+            document.querySelector('.title').textContent = `Connection Lost${dots}`;
+        }, 500);
+    </script>
+</body>
+</html>

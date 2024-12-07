@@ -1,26 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import {
-  AcademicCapIcon,
-  BookOpenIcon,
-  BeakerIcon,
-  LightBulbIcon,
-  StarIcon,
+ 
   UserGroupIcon,
-  BuildingLibraryIcon
+  ClipboardDocumentIcon,
+  ChatBubbleOvalLeftEllipsisIcon
 } from '@heroicons/react/24/outline';
 
 
 
 const navigation = [
-  { name: 'Informacion del grupo de Investigacion', href: '/grupo', icon: BookOpenIcon },
-  { name: 'Prácticas de Investigación', href: '/practicas', icon: AcademicCapIcon },
-  { name: 'Trabajos de Grado', href: '/trabajos-grado', icon: BookOpenIcon },
-  { name: 'Proyectos de Investigación', href: '/proyectos', icon: BeakerIcon },
-  { name: 'Líneas de Investigación', href: '/lineas', icon: LightBulbIcon },
-  { name: 'Calificación ante Minciencias', href: '/calificaciones', icon: StarIcon },
-  { name: 'Miembros del Grupo de Investigación', href: '/miembros', icon: UserGroupIcon },
-  { name: 'Convenios del Grupo de Investigación', href: '/convenios', icon: BuildingLibraryIcon },
-  { name: ' Gestion de Usuarios', href: '/usuarios', icon: BuildingLibraryIcon },
+  { name: 'Usuarios', href: '/usuarios', icon: UserGroupIcon },
+  { name: 'Citas', href: '/citas', icon: ClipboardDocumentIcon },
+  { name: 'Comunicacion Tiempo Real', href: '/Comunicacion_TiempoReal', icon: ChatBubbleOvalLeftEllipsisIcon },
 ];
 
 export default function Sidebar() {

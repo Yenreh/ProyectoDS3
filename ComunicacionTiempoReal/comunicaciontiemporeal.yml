@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: comunicaciontiemporeal
+  labels:
+    app: comunicaciontiemporeal
+spec:
+  containers:
+    - name: comunicaciontimeporeal
+      image: ervincaravaliibarra/comunicaciontiemporeal:latest
+      ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comunicaciontiemporeal
+spec:
+  selector:
+    app: comunicaciontiemporeal
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
