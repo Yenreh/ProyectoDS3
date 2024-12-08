@@ -6,3 +6,4 @@ kubectl delete -f gestion_usuarios/gestion-usuarios-deployment.yml
 kubectl delete -f auth/auth-deployment.yml
 kubectl delete -f api_gateway/api-gateway-deployment.yml
 kubectl delete -f frontend/frontend-deployment.yml
+kubectl delete -f comunicaciontiemporeal/comunicaciontiemporeal.yml
