@@ -1,0 +1,17 @@
+image:
+  tag: edge
+
+restarter:
+  enabled: true
+
+parent:
+  claiming:
+    enabled: true
+    token: viVjoCZQFpl0rdRb3BsEC5Ab8vm8MK8oyEzNtmCAmAeFfRbUro5gWn_FfKpdslQsWlFAgXtOuahGiISWutHxOf0Rew7AcnMMzbNdT4mKji6ZREj6WZPJ5rbrnDfxt9U0OxQmNEk
+    rooms: 4da01088-6f86-4740-9ca1-7a7521ed39b9
+
+child:
+  claiming:
+    enabled: true
+    token: viVjoCZQFpl0rdRb3BsEC5Ab8vm8MK8oyEzNtmCAmAeFfRbUro5gWn_FfKpdslQsWlFAgXtOuahGiISWutHxOf0Rew7AcnMMzbNdT4mKji6ZREj6WZPJ5rbrnDfxt9U0OxQmNEk
+    rooms: 4da01088-6f86-4740-9ca1-7a7521ed39b9

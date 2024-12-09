@@ -4,6 +4,7 @@ from flask_cors import CORS
 from functools import wraps
 from dotenv import load_dotenv 
 import os
+
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 app = Flask(__name__)
@@ -343,6 +344,8 @@ def get_appointment_history():
     except requests.exceptions.RequestException as e:
         print(f"Error fetching appointment history: {e}")
         return jsonify({"error": "Error fetching appointment history"}), 500
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
