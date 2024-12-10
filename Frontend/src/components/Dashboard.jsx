@@ -21,8 +21,8 @@ const features = [
     href: '/citas'
   },
   {
-    name: 'Usuarios',
-    description: 'Administración de Usuarios de entidad de salud',
+    name: 'Autenticacion',
+    description: 'Administración de cuestas para autenticacion',
     icon: UserGroupIcon,
     href: '/usuarios'
   }

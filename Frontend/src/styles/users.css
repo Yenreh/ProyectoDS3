@@ -1,103 +1,104 @@
 /* users.css */
 .form-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-    position: relative;
-  }
-  
-  .cancel-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background-color: #e11d48;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
-  
-  .form-input {
-    margin-top: 0.5rem;
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    border: 2px solid #d1d5db;
-  }
-  
-  .form-input:focus {
-    border-color: #6366f1;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
-  }
-  
-  .form-error {
-    color: #ef4444;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-  
-  .show-password-btn {
-    position: absolute;
-    top: 50%;
-    right: 0.75rem;
-    transform: translateY(-50%);
-    cursor: pointer;
-  }
-  
-  .table-container {
-    overflow-x: auto;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: white;
-  }
-  
-  .table {
-    min-width: 100%;
-    table-layout: auto;
-  }
-  
-  .table th, .table td {
-    padding: 1rem;
-    text-align: left;
-    font-size: 0.875rem;
-  }
-  
-  .table th {
-    background-color: #f3f4f6;
-    color: #4b5563;
-  }
-  
-  .table tr:hover {
-    background-color: #f9fafb;
-  }
-  
-  .action-btn {
-    margin-right: 1rem;
-    color: #4f46e5;
-    cursor: pointer;
-  }
-  
-  .delete-btn {
-    color: #ef4444;
-    cursor: pointer;
-  }
-  
-  .create-user-btn {
-    margin-top: 2rem;
-    background-color: #10b981;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-  }
-  
-  .create-user-btn:hover {
-    background-color: #007bff;
+  background-color: rgb(31, 41, 55); /* Cambiado al color especificado */
+  color: white; /* Para asegurar que el texto sea legible */
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  position: relative;
+}
 
-  }
-  
+.cancel-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #e11d48;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.form-input {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 2px solid #d1d5db;
+}
+
+.form-input:focus {
+  border-color: #6366f1;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+}
+
+.form-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.show-password-btn {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgb(31, 41, 55); /* Cambiado al color especificado */
+  color: white; /* Para asegurar contraste */
+}
+
+.table {
+  min-width: 100%;
+  table-layout: auto;
+  color: white; /* Para asegurar legibilidad */
+}
+
+.table th, .table td {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.table th {
+  background-color: rgb(55, 65, 81); /* Tonalidad más clara para encabezados */
+  color: white;
+}
+
+.table tr:hover {
+  background-color: rgb(75, 85, 99); /* Suave cambio al pasar el cursor */
+}
+
+.action-btn {
+  margin-right: 1rem;
+  color: #4f46e5;
+  cursor: pointer;
+}
+
+.delete-btn {
+  color: #ef4444;
+  cursor: pointer;
+}
+
+.create-user-btn {
+  margin-top: 2rem;
+  background-color: #10b981;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.create-user-btn:hover {
+  background-color: #007bff;
+}

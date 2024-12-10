@@ -9,7 +9,7 @@ import {
 
 
 const navigation = [
-  { name: 'Usuarios', href: '/usuarios', icon: UserGroupIcon },
+  { name: 'Autenticacion', href: '/usuarios', icon: UserGroupIcon },
   { name: 'Citas', href: '/citas', icon: ClipboardDocumentIcon },
   { name: 'Comunicacion Tiempo Real', href: '/Comunicacion_TiempoReal', icon: ChatBubbleOvalLeftEllipsisIcon },
 ];
