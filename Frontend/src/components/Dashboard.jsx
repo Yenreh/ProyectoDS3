@@ -1,70 +1,32 @@
 import { useNavigate } from 'react-router-dom';
 import {
-  AcademicCapIcon,
-  BookOpenIcon,
-  BeakerIcon,
-  LightBulbIcon,
-  StarIcon,
   UserGroupIcon,
-  BuildingLibraryIcon
+  ClipboardDocumentIcon,
+  ChatBubbleOvalLeftEllipsisIcon
+
+
 } from '@heroicons/react/24/outline';
 
 const features = [
   {
-    name: 'Informacion del Grupo de investigacion',
-    description: 'Gestión de información general del grupo',
+    name: 'Comunicacion en tiempo real',
+    description: 'No disponible',
+    icon: ChatBubbleOvalLeftEllipsisIcon,
+    href: '/Comunicacion_TiempoReal'
+  },
+  {
+    name: 'Citas ',
+    description: 'Gestión de citas medicas',
+    icon: ClipboardDocumentIcon,
+    href: '/citas'
+  },
+  {
+    name: 'Usuarios',
+    description: 'Administración de Usuarios de entidad de salud',
     icon: UserGroupIcon,
-    href: '/grupo'
-  },
-  {
-    name: 'Prácticas de Investigacion',
-    description: 'Gestión de prácticas académicas y profesionales',
-    icon: AcademicCapIcon,
-    href: '/practicas'
-  },
-  {
-    name: 'Trabajos de Grado',
-    description: 'Administración de trabajos de grado',
-    icon: BookOpenIcon,
-    href: '/trabajos-grado'
-  },
-  {
-    name: 'Proyectos de Investigacion',
-    description: 'Control de proyectos de investigación',
-    icon: BeakerIcon,
-    href: '/proyectos'
-  },
-  {
-    name: 'Líneas de Investigación',
-    description: 'Gestión de líneas de investigación',
-    icon: LightBulbIcon,
-    href: '/lineas'
-  },
-  {
-    name: 'Calificacion ante Minciencias',
-    description: 'Calificación del grupo de investigación',
-    icon: StarIcon,
-    href: '/calificaciones'
-  },
-  {
-    name: 'Miembros del Grupo de investigación',
-    description: 'Administración de miembros del grupo',
-    icon: UserGroupIcon,
-    href: '/miembros'
-  },
-  {
-    name: 'Convenios del Grupo de investigación',
-    description: 'Gestión de convenios y alianzas',
-    icon: BuildingLibraryIcon,
-    href: '/convenios'
-  },
-
-  {
-    name: 'Gestion de Usuarios',
-    description: 'Gestión de usuarios',
-    icon: BuildingLibraryIcon,
     href: '/usuarios'
   }
+  
 ];
 
 export default function Dashboard() {

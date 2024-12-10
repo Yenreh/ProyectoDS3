@@ -8,7 +8,7 @@ import RegisterForm from './components/auth/RegisterForm';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import ComunicacionTiempoReal from './components/ComunicacionTiempoReal';  // Asegúrate de importar el componente
-
+import Users from './components/auth/usuarios';
 function App() {
   return (
     <AuthProvider>
@@ -46,6 +46,16 @@ function App() {
                             element={
                               <div className="bg-white p-6 rounded-lg shadow-lg">
                                 <ComunicacionTiempoReal />
+                              </div>
+                            }
+                          />
+
+                          {/* Nueva ruta para usuarios */}
+                          <Route
+                            path="/usuarios"
+                            element={
+                              <div className="bg-white p-6 rounded-lg shadow-lg">
+                                <Users/>
                               </div>
                             }
                           />

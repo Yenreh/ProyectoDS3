@@ -8,6 +8,16 @@ const timeCommunicationApi = axios.create({
   credentials: true, // Permite enviar cookies de sesión si es necesario
 });
 
+// Nueva API de "users"
+const usersApi = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
+    ? `${import.meta.env.VITE_API_URL}/users`
+    : "http://localhost:5000/users",
+  credentials: true,
+});
+
+
+
 // Función para redirigir a la URL de time_communication
 export const getTimeCommunication = async () => {
   try {
@@ -21,3 +31,11 @@ export const getTimeCommunication = async () => {
 
 // Exporta la instancia para poder usarla en cualquier lugar
 export { timeCommunicationApi };
+
+
+// Funciones para "usuarios"
+export const getAllUsers = () => usersApi.get('/getUsers');
+export const getUser = (uid) => usersApi.get(`/getUser/${uid}`);
+export const createUser = (data) => usersApi.post('/createUser', data);
+export const updateUser = (uid, data) => usersApi.put(`/updateUser/${uid}`, data);
+export const deleteUser = (uid) => usersApi.delete(`/deleteUser/${uid}`);

@@ -22,6 +22,8 @@ auth_service_endpoint = 'http://auth-service:3000/auth/login'
 firebase_token_validation_endpoint = f"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={os.getenv('FIREBASE_API_KEY')}"
 logout_service_endpoint = 'http://auth-service:3000/auth/logout'  # El endpoint de logout
 register_service_endpoint = 'http://auth-service:3000/users/createUser'
+EXPRESS_SERVER_URL = 'http://auth-service:3000'
+
 # Middleware de autenticación
 def auth_required(f):
     @wraps(f)
@@ -135,6 +137,46 @@ def time_communication():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Error communicating with the real-time communication service"}), 500
+
+
+@app.route('/users/getUsers', methods=['GET'])
+def get_userss():
+    try:
+        # Redirigir la solicitud GET al microservicio de usuarios (servidor Express)
+        response = requests.get(f"{EXPRESS_SERVER_URL}/users/getUsers", params=request.args)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({"message": "Error al contactar con el servicio de usuarios", "error": str(e)}), 500
+
+@app.route('/users/deleteUser/<uid>', methods=['DELETE'])
+def delete_userss(uid):
+    try:
+        # Redirigir la solicitud DELETE al microservicio de usuarios (servidor Express)
+        response = requests.delete(f"{EXPRESS_SERVER_URL}/users/deleteUser/{uid}")
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({"message": "Error al contactar con el servicio de usuarios", "error": str(e)}), 500
+
+@app.route('/users/updateUser/<uid>', methods=['PUT'])
+def update_userss(uid):
+    try:
+        # Redirigir la solicitud PUT al microservicio de usuarios (servidor Express) con los datos en el cuerpo de la solicitud
+        response = requests.put(f"{EXPRESS_SERVER_URL}/users/updateUser/{uid}", json=request.json)
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({"message": "Error al contactar con el servicio de usuarios", "error": str(e)}), 500
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Endpoints para el Microservicio de Usuarios
