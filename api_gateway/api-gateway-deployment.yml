@@ -5,6 +5,16 @@ metadata:
   labels:
     app: api-gateway
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - minikube-m02 # Nodo deseado
+                  - minikube-m03 # Nodo alternativo
   containers:
     - name: api-gateway-container
       image: ervincaravaliibarra/api_gateway:latest

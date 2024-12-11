@@ -5,6 +5,16 @@ metadata:
   labels:
     app: auth
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - minikube-m02 # Nodo permitido
+                  - minikube-m03 # Nodo permitido
   containers:
     - name: auth-container
       image: ervincaravaliibarra/auth:latest
@@ -23,3 +33,4 @@ spec:
       port: 3000
       targetPort: 3000
   type: ClusterIP
+

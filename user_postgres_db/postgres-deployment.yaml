@@ -5,6 +5,16 @@ metadata:
   labels:
     app: postgres
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - minikube-m02 # Nodo permitido
+                  - minikube-m03 # Nodo permitido
   containers:
     - name: postgres
       image: postgres:latest
@@ -30,3 +40,4 @@ spec:
       port: 5432
       targetPort: 5432
   type: ClusterIP
+

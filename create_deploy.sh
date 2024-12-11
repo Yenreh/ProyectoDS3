@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Aplicar despliegues de cada componente
+kubectl apply -f  pepe.yaml
+sleep 30
 echo "Aplicando configuraciones de PostgreSQL..."
 kubectl apply -f user_postgres_db/postgres-deployment.yaml
 sleep 10
@@ -25,3 +27,7 @@ echo "Redirigiendo puertos para el API Gateway (5000) y (5173)..."
 kubectl port-forward svc/api-gateway-service 5000:5000 &
 kubectl port-forward svc/frontend-service 5173:5173 &
 kubectl port-forward svc/comunicaciontiemporeal 8080:8080 &
+kubectl port-forward service/grafana 3000:3000 &
+
+
+

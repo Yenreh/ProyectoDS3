@@ -4,13 +4,13 @@ from flask_cors import CORS
 from functools import wraps
 from dotenv import load_dotenv 
 import os
-
+import logging
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 app = Flask(__name__)
 CORS(app,supports_credentials=True)
 app.secret_key = 'mi_clave_secreta'  # Necesario para usar sesiones en Flask
-
+logging.basicConfig(level=logging.DEBUG)
 
 
 # Endpoints de los microservicios

@@ -5,14 +5,22 @@ metadata:
   labels:
     app: gestion-usuarios
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - minikube-m02 # Nodo permitido
+                  - minikube-m03 # Nodo permitido
   containers:
     - name: gestion-usuarios-container
       image: ervincaravaliibarra/gestion_usuarios
       ports:
         - containerPort: 8000
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -25,4 +33,5 @@ spec:
       port: 8000
       targetPort: 8000
   type: LoadBalancer
+
 
