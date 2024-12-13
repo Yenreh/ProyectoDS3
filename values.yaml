@@ -14,7 +14,7 @@ grafana:
     datasources:
       enabled: true
   image:
-    tag: 7.5.0
+    tag: 10.1.0
 
 
 

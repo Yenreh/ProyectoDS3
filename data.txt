@@ -20,6 +20,24 @@ Yes, this dashboard uses quite a few data sources. But these are all common comp
 
 15175: Monitors the Kubernetes cluster and its pods, CPU, Memory, IO, containers and certificate.
 
+
+15141: Dashboard for showing logs from Kubernetes in Loki. Has filters for namespace, container and stream.
+
+Includes a free text search field, to do string matching of logs in Loki
+
+159: Show classical system metrics of your servers. It’s also linked alerts of the selected servers (if alert are set). Need to use tag name for servers. The tag used is “alias” but you can change it in templating.
+
+
+11000:The Kubernetess Cluster Overview dashboard uses the prometheus data source to create a Grafana dashboard with the graph, singlestat and table panels.
+
+18267 : Added temperature and fan sensors panels and also small esthetic tweaks:
+Changed Overall average to a line every 1m, useful for alerts
+Changed Internet traffic bar from 1h to 5m
+Changed line thickness from 2 to 1
+Changed thresholds from 80 to 90
+Added temperature and fan sensors panels, useful for alerts as well
+
+22145: The Loki Logs dashboard uses the data source to create a Grafana dashboard with the panel.
 terminal en bash 
 flujo completo de trabajo: ./build_upload.sh && ./minikube.sh  && ./Loki-grafana.sh  && ./install-prometheus.sh  && ./create_deploy.sh
                            ./minikube.sh  && ./Loki-grafana.sh && ./install-prometheus.sh  && ./create_deploy.sh
