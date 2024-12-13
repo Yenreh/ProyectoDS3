@@ -1,3 +1,34 @@
 
+Login grafana
 Usuario: admin
-Contraseña: prom-operator
+Contraseña: kubectl get secret loki-stack-grafana  -o jsonpath='{.data.admin-password}' | base64 --decode
+
+dasboard para metricas en grafana se va al icono de + y se escoje import ahi se pone el numero o numeros segun lo que quieran
+11144: Cluster level overview of workloads deployed, based on prometheus metrics exposed by kubelet, node-exporter, nginx ingress controller
+The Kubernetes Cluster (k8s 1.16) dashboard uses the prometheus data source to create a Grafana dashboard with the graph and table panels.
+
+13838: The data used in the dashboard come from the components below, assuming no relabelling were done on them. If you don’t have some of them installed, or if you have configured relabeling on them, you might have to tune the dashboard to your own need.
+
+kube-state-metrics
+node-exporter
+kube-apiserver
+kubelet
+kubelet/cadvisor
+ETCD
+Yes, this dashboard uses quite a few data sources. But these are all common components that you should be monitoring already.
+
+
+15175: Monitors the Kubernetes cluster and its pods, CPU, Memory, IO, containers and certificate.
+
+terminal en bash 
+flujo completo de trabajo: ./build_upload.sh && ./minikube.sh  && ./Loki-grafana.sh  && ./install-prometheus.sh  && ./create_deploy.sh
+                           ./minikube.sh  && ./Loki-grafana.sh && ./install-prometheus.sh  && ./create_deploy.sh
+
+url para datasource de prometheus
+http://prometheus-kube-prometheus-prometheus:9090
+
+
+ 
+
+
+ 

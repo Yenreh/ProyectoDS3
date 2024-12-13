@@ -4,6 +4,10 @@ metadata:
   name: api-gateway-pod
   labels:
     app: api-gateway
+  annotations:
+    prometheus.io/scrape: "true"       # Habilita la recolección de métricas
+    prometheus.io/port: "8001"         # Puerto donde se expone el endpoint /metrics
+    prometheus.io/path: "/metrics"     # Ruta del endpoint para las métricas
 spec:
   affinity:
     nodeAffinity:
@@ -20,6 +24,7 @@ spec:
       image: ervincaravaliibarra/api_gateway:latest
       ports:
         - containerPort: 5000
+        - containerPort: 8001 # Puerto para métricas
 ---
 apiVersion: v1
 kind: Service
@@ -29,7 +34,12 @@ spec:
   selector:
     app: api-gateway
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 5000
       targetPort: 5000
+    - name: metrics
+      protocol: TCP
+      port: 8001
+      targetPort: 8001 # Exponer puerto de métricas
   type: ClusterIP

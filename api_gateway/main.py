@@ -3,11 +3,16 @@ import requests
 from flask_cors import CORS
 from functools import wraps
 from dotenv import load_dotenv 
+from prometheus_client import Counter, Summary, start_http_server, generate_latest
+import threading
 import os
 import logging
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 app = Flask(__name__)
+# Métricas de Prometheus
+REQUEST_COUNT = Counter('flask_app_requests_total', 'Cantidad total de solicitudes', ['method', 'endpoint'])
+REQUEST_LATENCY = Summary('flask_app_request_latency_seconds', 'Tiempo de respuesta por endpoint')
 CORS(app,supports_credentials=True)
 app.secret_key = 'mi_clave_secreta'  # Necesario para usar sesiones en Flask
 logging.basicConfig(level=logging.DEBUG)
@@ -23,6 +28,22 @@ firebase_token_validation_endpoint = f"https://identitytoolkit.googleapis.com/v1
 logout_service_endpoint = 'http://auth-service:3000/auth/logout'  # El endpoint de logout
 register_service_endpoint = 'http://auth-service:3000/users/createUser'
 EXPRESS_SERVER_URL = 'http://auth-service:3000'
+
+
+@app.before_request
+def before_request_func():
+    # Incrementa el contador de solicitudes antes de procesar cada request
+    REQUEST_COUNT.labels(method=request.method, endpoint=request.path).inc()
+
+@app.route('/')
+def home():
+    with REQUEST_LATENCY.time():
+        return jsonify({"message": "Welcome to the API!"})
+
+@app.route('/metrics')
+def metrics():
+    # Expone las métricas en el endpoint /metrics
+    return generate_latest(), 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 # Middleware de autenticación
 def auth_required(f):
@@ -390,4 +411,7 @@ def get_appointment_history():
 
 
 if __name__ == '__main__':
+    # Inicia el servidor de métricas en un hilo separado
+    metrics_thread = threading.Thread(target=start_http_server, args=(8001,), daemon=True)
+    metrics_thread.start()
     app.run(debug=True, port=5000)
