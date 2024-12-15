@@ -17,7 +17,7 @@ spec:
                   - minikube-m03 # Nodo permitido
   containers:
     - name: gestion-usuarios-container
-      image: ervincaravaliibarra/gestion_usuarios
+      image: dylanfarkas/gestion_usuarios
       ports:
         - containerPort: 8000
 ---

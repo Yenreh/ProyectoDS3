@@ -9,6 +9,9 @@ import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import ComunicacionTiempoReal from './components/ComunicacionTiempoReal';  // Asegúrate de importar el componente
 import Users from './components/auth/usuarios';
+import UserTable from './components/usuarios/UserTable';
+import AppointmentTable from './components/citas/AppointmentTable';
+
 function App() {
   return (
     <AuthProvider>
@@ -59,6 +62,24 @@ function App() {
                               </div>
                             }
                           />
+
+                          <Route
+                            path="/user_table"
+                            element={
+                              <div className="bg-white p-6 rounded-lg shadow-lg">
+                                <UserTable />
+                              </div>
+                            }
+                          />
+
+                          <Route
+                            path="/citas"
+                            element={
+                              <div className="bg-white p-6 rounded-lg shadow-lg">
+                                <AppointmentTable />
+                              </div>
+                            }
+                          />      
                         </Routes>
                       </main>
                     </div>

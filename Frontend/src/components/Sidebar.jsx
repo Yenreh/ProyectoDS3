@@ -3,13 +3,15 @@ import {
  
   UserGroupIcon,
   ClipboardDocumentIcon,
-  ChatBubbleOvalLeftEllipsisIcon
+  ChatBubbleOvalLeftEllipsisIcon,
+  LockClosedIcon
 } from '@heroicons/react/24/outline';
 
 
 
 const navigation = [
-  { name: 'Autenticacion', href: '/usuarios', icon: UserGroupIcon },
+  { name: 'Autenticacion', href: '/usuarios', icon: LockClosedIcon },
+  { name: 'Usuarios', href: '/user_table', icon: UserGroupIcon },
   { name: 'Citas', href: '/citas', icon: ClipboardDocumentIcon },
   { name: 'Comunicacion Tiempo Real', href: '/Comunicacion_TiempoReal', icon: ChatBubbleOvalLeftEllipsisIcon },
 ];

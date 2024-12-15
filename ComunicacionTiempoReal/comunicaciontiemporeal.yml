@@ -17,7 +17,7 @@ spec:
                   - minikube-m03 # Nodo permitido
   containers:
     - name: comunicaciontiemporeal
-      image: ervincaravaliibarra/comunicaciontiemporeal:latest
+      image: dylanfarkas/comunicaciontiemporeal:latest
       ports:
         - containerPort: 8080
 ---

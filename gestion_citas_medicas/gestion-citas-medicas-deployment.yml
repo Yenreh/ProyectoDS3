@@ -17,7 +17,7 @@ spec:
                   - minikube-m03 # Nodo permitido
   containers:
     - name: gestion-citas-medicas-container
-      image: ervincaravaliibarra/gestion_citas_medicas
+      image: dylanfarkas/gestion_citas_medicas
       ports:
         - containerPort: 8000
 ---

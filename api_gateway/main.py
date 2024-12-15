@@ -13,7 +13,7 @@ app = Flask(__name__)
 # Métricas de Prometheus
 REQUEST_COUNT = Counter('flask_app_requests_total', 'Cantidad total de solicitudes', ['method', 'endpoint'])
 REQUEST_LATENCY = Summary('flask_app_request_latency_seconds', 'Tiempo de respuesta por endpoint')
-CORS(app,supports_credentials=True)
+CORS(app,supports_credentials=True, resources={r"/*": {"origins": "*"}})
 app.secret_key = 'mi_clave_secreta'  # Necesario para usar sesiones en Flask
 logging.basicConfig(level=logging.DEBUG)
 
@@ -50,24 +50,6 @@ def auth_required(f):
     @wraps(f)
     def wrapped_function(*args, **kwargs):
         # Verificar si el token de autorización está presente en la sesión
-        token = session.get('auth_token')
-        if not token:
-            return jsonify({"error": "Token de autorización no proporcionado"}), 401
-        
-        try:
-            # Enviar token al servicio de autenticación para validarlo
-            print(f"Token enviado para validación: {token}")  # Depuración
-            response = requests.post(firebase_token_validation_endpoint, json={'idToken': token})
-            if response.status_code != 200:
-                print(f"Error de validación de token: {response.status_code} - {response.text}")  # Depuración
-                return jsonify({"error": "Token inválido o no autorizado"}), 401
-            
-            # Si el token es válido, puedes acceder a los datos del usuario
-            request.user = response.json()  # Información del usuario autenticado
-        except requests.exceptions.RequestException as e:
-            print(f"Error al validar token: {e}")
-            return jsonify({"error": "Error al validar token"}), 500
-        
         return f(*args, **kwargs)
     return wrapped_function
 

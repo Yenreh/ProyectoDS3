@@ -16,7 +16,23 @@ const usersApi = axios.create({
   credentials: true,
 });
 
+const userApi = axios.create({
+    baseURL: "http://localhost:5000",
+    credentials: true,
+});
 
+export const getAllUser = () => userApi.get('/users');
+export const createUser2 = () => userApi.post('/user');
+export const getDoctors = () => userApi.get("/doctors");
+export const getPacientes = () => userApi.get("/patients");
+
+
+const appointmentApi = axios.create({
+  baseURL: "http://localhost:5000",
+  credentials: true,
+});
+
+export const getAppointments = () => appointmentApi.get('/appointments');
 
 // Función para redirigir a la URL de time_communication
 export const getTimeCommunication = async () => {

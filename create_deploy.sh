@@ -20,7 +20,7 @@ sleep 180
 
 # Configurar port-forward para los servicios
 echo "Redirigiendo puertos para el API Gateway (5000) (5173) (8080) (3001)..."
-kubectl port-forward service/loki-stack-grafana 3001:80&
+#kubectl port-forward service/loki-stack-grafana 3001:80&
 kubectl port-forward svc/api-gateway-service 5000:5000 &
 kubectl port-forward svc/frontend-service 5173:5173 &
 kubectl port-forward svc/comunicaciontiemporeal 8080:8080 &

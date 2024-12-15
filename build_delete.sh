@@ -1,6 +1,6 @@
-docker rmi -f ervincaravaliibarra/gestion_usuarios
-docker rmi -f ervincaravaliibarra/auth
-docker rmi -f ervincaravaliibarra/gestion_citas_medicas
-docker rmi -f ervincaravaliibarra/api_gateway
+docker rmi -f dylanfarkas/gestion_usuarios
+docker rmi -f dylanfarkas/auth
+docker rmi -f dylanfarkas/gestion_citas_medicas
+docker rmi -f dylanfarkas/api_gateway
 docker image prune -f
 

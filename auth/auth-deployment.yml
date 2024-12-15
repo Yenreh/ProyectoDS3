@@ -17,7 +17,7 @@ spec:
                   - minikube-m03 # Nodo permitido
   containers:
     - name: auth-container
-      image: ervincaravaliibarra/auth:latest
+      image: dylanfarkas/auth:latest
       ports:
         - containerPort: 3000
 ---
